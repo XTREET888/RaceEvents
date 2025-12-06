@@ -1,0 +1,109 @@
+Создание базы данных БД
+CREATE DATABASE IF NOT EXISTS RaceEventsDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE RaceEventsDB;
+
+Таблица Users (базовая таблица для всех пользователей)
+CREATE TABLE IF NOT EXISTS Users (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    FirstName VARCHAR(100) NOT NULL,
+    LastName VARCHAR(100) NOT NULL,
+    Role ENUM('PARTICIPANT', 'ADMINISTRATOR') NOT NULL,
+    INDEX idx_email (Email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Таблица Participants (наследует User)
+CREATE TABLE IF NOT EXISTS Participants (
+    Id INT PRIMARY KEY,
+    DriverLicense VARCHAR(50) NOT NULL,
+    DateOfBirth DATE NOT NULL,
+    Phone VARCHAR(20) NULL,
+    RegistrationDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Id) REFERENCES Users(Id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Таблица Administrators (наследует User)
+CREATE TABLE IF NOT EXISTS Administrators (
+    Id INT PRIMARY KEY,
+    Department VARCHAR(100) NULL,
+    HireDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Id) REFERENCES Users(Id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Таблица Cars (Автомобили)
+CREATE TABLE IF NOT EXISTS Cars (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Brand VARCHAR(50) NOT NULL,
+    Model VARCHAR(50) NOT NULL,
+    CarClass VARCHAR(50) NOT NULL,
+    Year INT NOT NULL,
+    Color VARCHAR(30) NULL,
+    LicensePlate VARCHAR(20) NOT NULL UNIQUE,
+    ParticipantId INT NOT NULL,
+    FOREIGN KEY (ParticipantId) REFERENCES Participants(Id) ON DELETE CASCADE,
+    INDEX idx_license_plate (LicensePlate),
+    INDEX idx_participant (ParticipantId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Таблица Events (События)
+CREATE TABLE IF NOT EXISTS Events (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(200) NOT NULL,
+    Description VARCHAR(2000) NULL,
+    Date DATETIME NOT NULL,
+    Location VARCHAR(200) NOT NULL,
+    TrackType VARCHAR(50) NOT NULL,
+    MaxParticipants INT NOT NULL,
+    Status ENUM('UPCOMING', 'REGISTRATION_OPEN', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED') NOT NULL DEFAULT 'UPCOMING',
+    AdministratorId INT NOT NULL,
+    FOREIGN KEY (AdministratorId) REFERENCES Administrators(Id) ON DELETE RESTRICT,
+    INDEX idx_administrator (AdministratorId),
+    INDEX idx_date (Date),
+    INDEX idx_status (Status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Таблица Applications (Заявки)
+CREATE TABLE IF NOT EXISTS Applications (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Status ENUM('PENDING', 'APPROVED', 'REJECTED', 'CANCELLED') NOT NULL DEFAULT 'PENDING',
+    ApplicationDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ParticipantId INT NOT NULL,
+    EventId INT NOT NULL,
+    CarId INT NOT NULL,
+    FOREIGN KEY (ParticipantId) REFERENCES Participants(Id) ON DELETE CASCADE,
+    FOREIGN KEY (EventId) REFERENCES Events(Id) ON DELETE CASCADE,
+    FOREIGN KEY (CarId) REFERENCES Cars(Id) ON DELETE RESTRICT,
+    INDEX idx_participant (ParticipantId),
+    INDEX idx_event (EventId),
+    INDEX idx_car (CarId),
+    INDEX idx_status (Status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Таблица LapTimes (Время кругов)
+CREATE TABLE IF NOT EXISTS LapTimes (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    LapNumber INT NOT NULL,
+    Time TIME NOT NULL,
+    RecordedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ApplicationId INT NOT NULL,
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(Id) ON DELETE CASCADE,
+    INDEX idx_application (ApplicationId),
+    INDEX idx_lap_number (LapNumber)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Таблица FinalResults (Финальные результаты)
+CREATE TABLE IF NOT EXISTS FinalResults (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    BestLapTime TIME NOT NULL,
+    Position INT NOT NULL,
+    TotalLaps INT NOT NULL,
+    AverageLapTime TIME NOT NULL,
+    TotalTime TIME NOT NULL,
+    ApplicationId INT NOT NULL UNIQUE,
+    FOREIGN KEY (ApplicationId) REFERENCES Applications(Id) ON DELETE CASCADE,
+    INDEX idx_application (ApplicationId),
+    INDEX idx_position (Position)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
