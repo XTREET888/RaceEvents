@@ -18,6 +18,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Application> Applications { get; set; }
     public DbSet<LapTime> LapTimes { get; set; }
     public DbSet<FinalResult> FinalResults { get; set; }
+    public DbSet<Championship> Championships { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,6 +40,18 @@ public class ApplicationDbContext : DbContext
             .WithMany(a => a.Events)
             .HasForeignKey(e => e.AdministratorId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Championship>()
+            .HasOne(c => c.Administrator)
+            .WithMany()
+            .HasForeignKey(c => c.AdministratorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Event>()
+            .HasOne(e => e.Championship)
+            .WithMany(c => c.Events)
+            .HasForeignKey(e => e.ChampionshipId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Application>()
             .HasOne(a => a.Participant)
