@@ -21,6 +21,12 @@ public class Participant : User
     [DataType(DataType.DateTime)]
     public DateTime RegistrationDate { get; set; } = DateTime.Now;
 
+    [DataType(DataType.Time)]
+    public TimeSpan? BestLapTime { get; set; }
+
+    [Required]
+    public int PodiumCount { get; set; } = 0;
+
     public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
     public virtual ICollection<Application> Applications { get; set; } = new List<Application>();
 }
