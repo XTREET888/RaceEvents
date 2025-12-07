@@ -24,6 +24,12 @@ public class Application
     [Required]
     public int CarId { get; set; }
 
+    [Required]
+    public HelmetType HelmetType { get; set; } = HelmetType.OWN;
+
+    [Required]
+    public TimerType TimerType { get; set; } = TimerType.NONE;
+
     [ForeignKey("ParticipantId")]
     public virtual Participant Participant { get; set; } = null!;
 
