@@ -29,6 +29,11 @@ public class Car
     [StringLength(20)]
     public string LicensePlate { get; set; } = string.Empty;
 
+    public int? Horsepower { get; set; }
+
+    [StringLength(20)]
+    public string? DriveType { get; set; }
+
     [Required]
     public int ParticipantId { get; set; }
 
