@@ -53,6 +53,11 @@ public class Event
     [ForeignKey("AdministratorId")]
     public virtual Administrator Administrator { get; set; } = null!;
 
+    public int? ChampionshipId { get; set; }
+
+    [ForeignKey("ChampionshipId")]
+    public virtual Championship? Championship { get; set; }
+
     public virtual ICollection<Application> Applications { get; set; } = new List<Application>();
 }
 
