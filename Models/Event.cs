@@ -34,6 +34,20 @@ public class Event
     public EventStatus Status { get; set; } = EventStatus.UPCOMING;
 
     [Required]
+    public EventType Type { get; set; } = EventType.TRACK_DAY;
+
+    [Required]
+    public CarTypeRequirement CarTypeRequirement { get; set; } = CarTypeRequirement.ANY;
+
+    [StringLength(50)]
+    public string? RequiredCarClass { get; set; }
+
+    public int? MaxHorsepower { get; set; }
+
+    [StringLength(20)]
+    public string? RequiredDriveType { get; set; }
+
+    [Required]
     public int AdministratorId { get; set; }
 
     [ForeignKey("AdministratorId")]
