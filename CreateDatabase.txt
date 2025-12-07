@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS Participants (
     DateOfBirth DATE NOT NULL,
     Phone VARCHAR(20) NULL,
     RegistrationDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    BestLapTime TIME NULL,
+    PodiumCount INT NOT NULL DEFAULT 0,
     FOREIGN KEY (Id) REFERENCES Users(Id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -41,6 +43,8 @@ CREATE TABLE IF NOT EXISTS Cars (
     Year INT NOT NULL,
     Color VARCHAR(30) NULL,
     LicensePlate VARCHAR(20) NOT NULL UNIQUE,
+    Horsepower INT NULL,
+    DriveType VARCHAR(20) NULL,
     ParticipantId INT NOT NULL,
     FOREIGN KEY (ParticipantId) REFERENCES Participants(Id) ON DELETE CASCADE,
     INDEX idx_license_plate (LicensePlate),
@@ -57,11 +61,19 @@ CREATE TABLE IF NOT EXISTS Events (
     TrackType VARCHAR(50) NOT NULL,
     MaxParticipants INT NOT NULL,
     Status ENUM('UPCOMING', 'REGISTRATION_OPEN', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED') NOT NULL DEFAULT 'UPCOMING',
+    Type ENUM('WINTER', 'SUMMER', 'TRACK_DAY') NOT NULL DEFAULT 'TRACK_DAY',
+    CarTypeRequirement ENUM('ANY', 'SPECIFIC_CLASS') NOT NULL DEFAULT 'ANY',
+    RequiredCarClass VARCHAR(50) NULL,
+    MaxHorsepower INT NULL,
+    RequiredDriveType VARCHAR(20) NULL,
     AdministratorId INT NOT NULL,
+    ChampionshipId INT NULL,
     FOREIGN KEY (AdministratorId) REFERENCES Administrators(Id) ON DELETE RESTRICT,
+    FOREIGN KEY (ChampionshipId) REFERENCES Championships(Id) ON DELETE SET NULL,
     INDEX idx_administrator (AdministratorId),
     INDEX idx_date (Date),
-    INDEX idx_status (Status)
+    INDEX idx_status (Status),
+    INDEX idx_championship (ChampionshipId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 Таблица Applications (Заявки)
@@ -72,6 +84,8 @@ CREATE TABLE IF NOT EXISTS Applications (
     ParticipantId INT NOT NULL,
     EventId INT NOT NULL,
     CarId INT NOT NULL,
+    HelmetType ENUM('OWN', 'RENTAL') NOT NULL DEFAULT 'OWN',
+    TimerType ENUM('NONE', 'RENTAL') NOT NULL DEFAULT 'NONE',
     FOREIGN KEY (ParticipantId) REFERENCES Participants(Id) ON DELETE CASCADE,
     FOREIGN KEY (EventId) REFERENCES Events(Id) ON DELETE CASCADE,
     FOREIGN KEY (CarId) REFERENCES Cars(Id) ON DELETE RESTRICT,
@@ -105,5 +119,20 @@ CREATE TABLE IF NOT EXISTS FinalResults (
     FOREIGN KEY (ApplicationId) REFERENCES Applications(Id) ON DELETE CASCADE,
     INDEX idx_application (ApplicationId),
     INDEX idx_position (Position)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Таблица Championships (Чемпионаты)
+CREATE TABLE IF NOT EXISTS Championships (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(200) NOT NULL,
+    Description VARCHAR(2000) NULL,
+    StartDate DATETIME NOT NULL,
+    EndDate DATETIME NOT NULL,
+    RequiredCarClass VARCHAR(50) NOT NULL,
+    MinPodiumsRequired INT NOT NULL DEFAULT 3,
+    AdministratorId INT NOT NULL,
+    FOREIGN KEY (AdministratorId) REFERENCES Administrators(Id) ON DELETE RESTRICT,
+    INDEX idx_administrator (AdministratorId),
+    INDEX idx_dates (StartDate, EndDate)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
