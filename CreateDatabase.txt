@@ -51,6 +51,21 @@ CREATE TABLE IF NOT EXISTS Cars (
     INDEX idx_participant (ParticipantId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+Таблица Championships (Чемпионаты)
+CREATE TABLE IF NOT EXISTS Championships (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(200) NOT NULL,
+    Description VARCHAR(2000) NULL,
+    StartDate DATETIME NOT NULL,
+    EndDate DATETIME NOT NULL,
+    RequiredCarClass VARCHAR(50) NOT NULL,
+    MinPodiumsRequired INT NOT NULL DEFAULT 3,
+    AdministratorId INT NOT NULL,
+    FOREIGN KEY (AdministratorId) REFERENCES Administrators(Id) ON DELETE RESTRICT,
+    INDEX idx_administrator (AdministratorId),
+    INDEX idx_dates (StartDate, EndDate)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 Таблица Events (События)
 CREATE TABLE IF NOT EXISTS Events (
     Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -119,20 +134,5 @@ CREATE TABLE IF NOT EXISTS FinalResults (
     FOREIGN KEY (ApplicationId) REFERENCES Applications(Id) ON DELETE CASCADE,
     INDEX idx_application (ApplicationId),
     INDEX idx_position (Position)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-Таблица Championships (Чемпионаты)
-CREATE TABLE IF NOT EXISTS Championships (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    Title VARCHAR(200) NOT NULL,
-    Description VARCHAR(2000) NULL,
-    StartDate DATETIME NOT NULL,
-    EndDate DATETIME NOT NULL,
-    RequiredCarClass VARCHAR(50) NOT NULL,
-    MinPodiumsRequired INT NOT NULL DEFAULT 3,
-    AdministratorId INT NOT NULL,
-    FOREIGN KEY (AdministratorId) REFERENCES Administrators(Id) ON DELETE RESTRICT,
-    INDEX idx_administrator (AdministratorId),
-    INDEX idx_dates (StartDate, EndDate)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
