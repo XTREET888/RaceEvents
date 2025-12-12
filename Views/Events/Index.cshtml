@@ -1,0 +1,51 @@
+@model IEnumerable<RaceEvents.Models.Event>
+@{
+    ViewData["Title"] = "События";
+    var userId = Context.Session.GetInt32("UserId");
+    var userRole = Context.Session.GetString("UserRole");
+    var isAdmin = userRole == "ADMINISTRATOR";
+}
+
+<h2>События</h2>
+
+@if (isAdmin)
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Создать событие</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Дата</th>
+            <th>Место</th>
+            <th>Тип</th>
+            <th>Статус</th>
+            <th>Участников</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Date.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@item.Location</td>
+                <td>@item.Type</td>
+                <td>@item.Status</td>
+                <td>@item.Applications.Count(a => a.Status == Models.Enums.ApplicationStatus.APPROVED) / @item.MaxParticipants</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Подробнее</a>
+                    @if (isAdmin && item.AdministratorId == userId)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
