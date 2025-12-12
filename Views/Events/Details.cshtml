@@ -1,0 +1,74 @@
+@model RaceEvents.Models.Event
+@{
+    ViewData["Title"] = "Детали события";
+    var userId = Context.Session.GetInt32("UserId");
+    var userRole = Context.Session.GetString("UserRole");
+    var isAdmin = userRole == "ADMINISTRATOR";
+}
+
+<h2>@Model.Title</h2>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Описание</dt>
+        <dd class="col-sm-10">@(Model.Description ?? "-")</dd>
+
+        <dt class="col-sm-2">Дата и время</dt>
+        <dd class="col-sm-10">@Model.Date.ToString("dd.MM.yyyy HH:mm")</dd>
+
+        <dt class="col-sm-2">Место проведения</dt>
+        <dd class="col-sm-10">@Model.Location</dd>
+
+        <dt class="col-sm-2">Тип трассы</dt>
+        <dd class="col-sm-10">@Model.TrackType</dd>
+
+        <dt class="col-sm-2">Тип события</dt>
+        <dd class="col-sm-10">@Model.Type</dd>
+
+        <dt class="col-sm-2">Статус</dt>
+        <dd class="col-sm-10">@Model.Status</dd>
+
+        <dt class="col-sm-2">Максимум участников</dt>
+        <dd class="col-sm-10">@Model.MaxParticipants</dd>
+
+        <dt class="col-sm-2">Требование к автомобилю</dt>
+        <dd class="col-sm-10">@Model.CarTypeRequirement</dd>
+
+        @if (Model.CarTypeRequirement == Models.Enums.CarTypeRequirement.SPECIFIC_CLASS)
+        {
+            <dt class="col-sm-2">Требуемый класс</dt>
+            <dd class="col-sm-10">@Model.RequiredCarClass</dd>
+        }
+
+        @if (Model.MaxHorsepower.HasValue)
+        {
+            <dt class="col-sm-2">Макс. мощность</dt>
+            <dd class="col-sm-10">@Model.MaxHorsepower л.с.</dd>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.RequiredDriveType))
+        {
+            <dt class="col-sm-2">Требуемый привод</dt>
+            <dd class="col-sm-10">@Model.RequiredDriveType</dd>
+        }
+
+        @if (Model.Championship != null)
+        {
+            <dt class="col-sm-2">Чемпионат</dt>
+            <dd class="col-sm-10">@Model.Championship.Title</dd>
+        }
+
+        <dt class="col-sm-2">Организатор</dt>
+        <dd class="col-sm-10">@Model.Administrator.FirstName @Model.Administrator.LastName</dd>
+    </dl>
+</div>
+
+<div>
+    @if (isAdmin && Model.AdministratorId == userId)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редактировать</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+</div>
+
