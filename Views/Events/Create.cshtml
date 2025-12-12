@@ -1,0 +1,113 @@
+@model RaceEvents.Models.ViewModels.EventViewModel
+@{
+    ViewData["Title"] = "Создать событие";
+    var championships = ViewBag.Championships as List<RaceEvents.Models.Championship> ?? new List<RaceEvents.Models.Championship>();
+}
+
+<h2>Создать событие</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Date" class="form-label"></label>
+                <input asp-for="Date" type="datetime-local" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Location" class="form-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="TrackType" class="form-label"></label>
+                <input asp-for="TrackType" class="form-control" />
+                <span asp-validation-for="TrackType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MaxParticipants" class="form-label"></label>
+                <input asp-for="MaxParticipants" type="number" class="form-control" />
+                <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Type" class="form-label"></label>
+                <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<RaceEvents.Models.Enums.EventType>()"></select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CarTypeRequirement" class="form-label"></label>
+                <select asp-for="CarTypeRequirement" class="form-select" asp-items="Html.GetEnumSelectList<RaceEvents.Models.Enums.CarTypeRequirement>()"></select>
+                <span asp-validation-for="CarTypeRequirement" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3" id="requiredCarClassGroup" style="display: none;">
+                <label asp-for="RequiredCarClass" class="form-label"></label>
+                <input asp-for="RequiredCarClass" class="form-control" />
+                <span asp-validation-for="RequiredCarClass" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MaxHorsepower" class="form-label"></label>
+                <input asp-for="MaxHorsepower" type="number" class="form-control" />
+                <span asp-validation-for="MaxHorsepower" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="RequiredDriveType" class="form-label"></label>
+                <input asp-for="RequiredDriveType" class="form-control" />
+                <span asp-validation-for="RequiredDriveType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ChampionshipId" class="form-label">Чемпионат (необязательно)</label>
+                <select asp-for="ChampionshipId" class="form-select">
+                    <option value="">Не выбран</option>
+                    @foreach (var champ in championships)
+                    {
+                        <option value="@champ.Id">@champ.Title</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Создать</button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('CarTypeRequirement').addEventListener('change', function() {
+            var requiredCarClassGroup = document.getElementById('requiredCarClassGroup');
+            if (this.value === 'SPECIFIC_CLASS') {
+                requiredCarClassGroup.style.display = 'block';
+            } else {
+                requiredCarClassGroup.style.display = 'none';
+            }
+        });
+    </script>
+}
+
