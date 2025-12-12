@@ -1,0 +1,119 @@
+@model RaceEvents.Models.Participant
+@{
+    ViewData["Title"] = "Мой профиль";
+    var podiumCount = (int)ViewBag.PodiumCount;
+    var bestLapTime = (TimeSpan?)ViewBag.BestLapTime;
+    var applicationsWithPodiums = ViewBag.ApplicationsWithPodiums as List<RaceEvents.Models.Application> ?? new List<RaceEvents.Models.Application>();
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h4>Личная информация</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Имя:</strong> @Model.FirstName @Model.LastName</p>
+                <p><strong>Email:</strong> @Model.Email</p>
+                <p><strong>Телефон:</strong> @(Model.Phone ?? "-")</p>
+                <p><strong>Дата рождения:</strong> @Model.DateOfBirth.ToString("dd.MM.yyyy")</p>
+                <p><strong>Водительское удостоверение:</strong> @Model.DriverLicense</p>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h4>Статистика</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Лучшее время круга:</strong> 
+                    @if (bestLapTime.HasValue)
+                    {
+                        <span>@bestLapTime.Value.ToString(@"mm\:ss\.fff")</span>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </p>
+                <p><strong>Количество подиумов:</strong> @podiumCount</p>
+                <p><strong>Количество автомобилей:</strong> @Model.Cars.Count</p>
+                <p><strong>Количество заявок:</strong> @Model.Applications.Count</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h4>Мои автомобили</h4>
+            </div>
+            <div class="card-body">
+                @if (Model.Cars.Any())
+                {
+                    <div class="row">
+                        @foreach (var car in Model.Cars)
+                        {
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5>@car.Brand @car.Model</h5>
+                                        <p class="mb-1"><small>Класс: @car.CarClass</small></p>
+                                        <p class="mb-1"><small>Год: @car.Year</small></p>
+                                        <p class="mb-1"><small>Госномер: @car.LicensePlate</small></p>
+                                        @if (car.Horsepower.HasValue)
+                                        {
+                                            <p class="mb-1"><small>Мощность: @car.Horsepower л.с.</small></p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>У вас пока нет автомобилей. <a asp-controller="Cars" asp-action="Create">Добавить автомобиль</a></p>
+                }
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h4>События с подиумами</h4>
+            </div>
+            <div class="card-body">
+                @if (applicationsWithPodiums.Any())
+                {
+                    <div class="row">
+                        @foreach (var application in applicationsWithPodiums)
+                        {
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h5 class="mb-0">@application.Event.Title</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="mb-1"><strong>Дата:</strong> @application.Event.Date.ToString("dd.MM.yyyy")</p>
+                                        <p class="mb-1"><strong>Место:</strong> @application.Event.Location</p>
+                                        @if (application.FinalResult != null)
+                                        {
+                                            <p class="mb-1"><strong>Позиция:</strong> @application.FinalResult.Position</p>
+                                            <p class="mb-1"><strong>Лучшее время:</strong> @application.FinalResult.BestLapTime.ToString(@"mm\:ss\.fff")</p>
+                                        }
+                                        <p class="mb-0"><small>Автомобиль: @application.Car.Brand @application.Car.Model</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>У вас пока нет подиумов.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
