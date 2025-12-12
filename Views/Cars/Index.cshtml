@@ -1,0 +1,44 @@
+@model IEnumerable<RaceEvents.Models.Car>
+@{
+    ViewData["Title"] = "Мои автомобили";
+}
+
+<h2>Мои автомобили</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Добавить автомобиль</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Марка</th>
+            <th>Модель</th>
+            <th>Класс</th>
+            <th>Год</th>
+            <th>Госномер</th>
+            <th>Мощность (л.с.)</th>
+            <th>Тип привода</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Brand</td>
+                <td>@item.Model</td>
+                <td>@item.CarClass</td>
+                <td>@item.Year</td>
+                <td>@item.LicensePlate</td>
+                <td>@(item.Horsepower?.ToString() ?? "-")</td>
+                <td>@(item.DriveType ?? "-")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
