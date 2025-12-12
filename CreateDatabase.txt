@@ -1,9 +1,7 @@
-Создание базы данных БД
 CREATE DATABASE IF NOT EXISTS RaceEventsDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE RaceEventsDB;
 
-Таблица Users (базовая таблица для всех пользователей)
 CREATE TABLE IF NOT EXISTS Users (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Email VARCHAR(255) NOT NULL UNIQUE,
@@ -14,7 +12,6 @@ CREATE TABLE IF NOT EXISTS Users (
     INDEX idx_email (Email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-Таблица Participants (наследует User)
 CREATE TABLE IF NOT EXISTS Participants (
     Id INT PRIMARY KEY,
     DriverLicense VARCHAR(50) NOT NULL,
@@ -26,7 +23,6 @@ CREATE TABLE IF NOT EXISTS Participants (
     FOREIGN KEY (Id) REFERENCES Users(Id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-Таблица Administrators (наследует User)
 CREATE TABLE IF NOT EXISTS Administrators (
     Id INT PRIMARY KEY,
     Department VARCHAR(100) NULL,
@@ -34,7 +30,6 @@ CREATE TABLE IF NOT EXISTS Administrators (
     FOREIGN KEY (Id) REFERENCES Users(Id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-Таблица Cars (Автомобили)
 CREATE TABLE IF NOT EXISTS Cars (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Brand VARCHAR(50) NOT NULL,
@@ -51,7 +46,6 @@ CREATE TABLE IF NOT EXISTS Cars (
     INDEX idx_participant (ParticipantId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-Таблица Championships (Чемпионаты)
 CREATE TABLE IF NOT EXISTS Championships (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Title VARCHAR(200) NOT NULL,
@@ -66,7 +60,6 @@ CREATE TABLE IF NOT EXISTS Championships (
     INDEX idx_dates (StartDate, EndDate)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-Таблица Events (События)
 CREATE TABLE IF NOT EXISTS Events (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Title VARCHAR(200) NOT NULL,
@@ -91,7 +84,6 @@ CREATE TABLE IF NOT EXISTS Events (
     INDEX idx_championship (ChampionshipId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-Таблица Applications (Заявки)
 CREATE TABLE IF NOT EXISTS Applications (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Status ENUM('PENDING', 'APPROVED', 'REJECTED', 'CANCELLED') NOT NULL DEFAULT 'PENDING',
@@ -110,7 +102,6 @@ CREATE TABLE IF NOT EXISTS Applications (
     INDEX idx_status (Status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-Таблица LapTimes (Время кругов)
 CREATE TABLE IF NOT EXISTS LapTimes (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     LapNumber INT NOT NULL,
@@ -122,7 +113,6 @@ CREATE TABLE IF NOT EXISTS LapTimes (
     INDEX idx_lap_number (LapNumber)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-Таблица FinalResults (Финальные результаты)
 CREATE TABLE IF NOT EXISTS FinalResults (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     BestLapTime TIME NOT NULL,
@@ -135,4 +125,3 @@ CREATE TABLE IF NOT EXISTS FinalResults (
     INDEX idx_application (ApplicationId),
     INDEX idx_position (Position)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
