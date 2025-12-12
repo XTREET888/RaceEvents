@@ -1,0 +1,73 @@
+@model RaceEvents.Models.ViewModels.CarViewModel
+@{
+    ViewData["Title"] = "Добавить автомобиль";
+}
+
+<h2>Добавить автомобиль</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Brand" class="form-label"></label>
+                <input asp-for="Brand" class="form-control" />
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Model" class="form-label"></label>
+                <input asp-for="Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CarClass" class="form-label"></label>
+                <input asp-for="CarClass" class="form-control" />
+                <span asp-validation-for="CarClass" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Year" class="form-label"></label>
+                <input asp-for="Year" type="number" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Color" class="form-label"></label>
+                <input asp-for="Color" class="form-control" />
+                <span asp-validation-for="Color" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="LicensePlate" class="form-label"></label>
+                <input asp-for="LicensePlate" class="form-control" />
+                <span asp-validation-for="LicensePlate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Horsepower" class="form-label"></label>
+                <input asp-for="Horsepower" type="number" class="form-control" />
+                <span asp-validation-for="Horsepower" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DriveType" class="form-label"></label>
+                <input asp-for="DriveType" class="form-control" />
+                <span asp-validation-for="DriveType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Создать</button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
