@@ -36,7 +36,7 @@
                 <td>@item.Location</td>
                 <td>@item.Type</td>
                 <td>@item.Status</td>
-                <td>@item.Applications.Count(a => a.Status == Models.Enums.ApplicationStatus.APPROVED) / @item.MaxParticipants</td>
+                <td>@item.Applications.Count(a => a.Status == RaceEvents.Models.Enums.ApplicationStatus.APPROVED) / @item.MaxParticipants</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Подробнее</a>
                     @if (isAdmin && item.AdministratorId == userId)

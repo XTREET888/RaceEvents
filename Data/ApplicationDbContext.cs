@@ -25,9 +25,15 @@ public class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<User>()
-            .HasDiscriminator(u => u.Role)
-            .HasValue<Participant>(Models.Enums.Role.PARTICIPANT)
-            .HasValue<Administrator>(Models.Enums.Role.ADMINISTRATOR);
+            .ToTable("Users");
+
+        modelBuilder.Entity<Participant>()
+            .ToTable("Participants")
+            .HasBaseType<User>();
+
+        modelBuilder.Entity<Administrator>()
+            .ToTable("Administrators")
+            .HasBaseType<User>();
 
         modelBuilder.Entity<Car>()
             .HasOne(c => c.Participant)

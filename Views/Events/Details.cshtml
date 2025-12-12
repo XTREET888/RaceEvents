@@ -35,7 +35,7 @@
         <dt class="col-sm-2">Требование к автомобилю</dt>
         <dd class="col-sm-10">@Model.CarTypeRequirement</dd>
 
-        @if (Model.CarTypeRequirement == Models.Enums.CarTypeRequirement.SPECIFIC_CLASS)
+        @if (Model.CarTypeRequirement == RaceEvents.Models.Enums.CarTypeRequirement.SPECIFIC_CLASS)
         {
             <dt class="col-sm-2">Требуемый класс</dt>
             <dd class="col-sm-10">@Model.RequiredCarClass</dd>
