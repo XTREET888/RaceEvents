@@ -21,10 +21,9 @@ public class CarViewModel
     [Display(Name = "Класс")]
     public string CarClass { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Год обязателен")]
-    [Range(1900, 2100, ErrorMessage = "Некорректный год")]
+    [Range(1900, 2100, ErrorMessage = "Некорректный год. Год должен быть от 1900 до 2100")]
     [Display(Name = "Год")]
-    public int Year { get; set; }
+    public int? Year { get; set; }
 
     [StringLength(30)]
     [Display(Name = "Цвет")]
@@ -43,4 +42,7 @@ public class CarViewModel
     [Display(Name = "Тип привода")]
     public string? DriveType { get; set; }
 }
+
+
+
 

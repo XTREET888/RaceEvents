@@ -18,7 +18,9 @@ public class CarsController : Controller
     public async Task<IActionResult> Index()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
-        if (userId == null)
+        var userRole = HttpContext.Session.GetString("UserRole");
+        
+        if (userId == null || userRole != "PARTICIPANT")
         {
             return RedirectToAction("Login", "Account");
         }
@@ -33,7 +35,9 @@ public class CarsController : Controller
     public IActionResult Create()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
-        if (userId == null)
+        var userRole = HttpContext.Session.GetString("UserRole");
+        
+        if (userId == null || userRole != "PARTICIPANT")
         {
             return RedirectToAction("Login", "Account");
         }
@@ -43,45 +47,69 @@ public class CarsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CarViewModel model)
+    public async Task<IActionResult> Create(CarViewModel carViewModel)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
-        if (userId == null)
+        var userRole = HttpContext.Session.GetString("UserRole");
+        
+        if (userId == null || userRole != "PARTICIPANT")
         {
             return RedirectToAction("Login", "Account");
         }
 
         if (ModelState.IsValid)
         {
+            var participant = await _context.Participants
+                .FirstOrDefaultAsync(p => p.Id == userId.Value);
+            
+            if (participant == null)
+            {
+                ModelState.AddModelError("", "Пользователь не найден");
+                return View(carViewModel);
+            }
+
             var existingCar = await _context.Cars
-                .FirstOrDefaultAsync(c => c.LicensePlate == model.LicensePlate);
+                .FirstOrDefaultAsync(c => c.LicensePlate == carViewModel.LicensePlate);
             
             if (existingCar != null)
             {
                 ModelState.AddModelError("LicensePlate", "Автомобиль с таким госномером уже существует");
-                return View(model);
+                return View(carViewModel);
+            }
+
+            if (!carViewModel.Year.HasValue || carViewModel.Year.Value < 1900 || carViewModel.Year.Value > 2100)
+            {
+                ModelState.AddModelError("Year", "Год обязателен и должен быть от 1900 до 2100");
+                return View(carViewModel);
             }
 
             var car = new Car
             {
-                Brand = model.Brand,
-                Model = model.Model,
-                CarClass = model.CarClass,
-                Year = model.Year,
-                Color = model.Color,
-                LicensePlate = model.LicensePlate,
-                Horsepower = model.Horsepower,
-                DriveType = model.DriveType,
+                Brand = carViewModel.Brand,
+                Model = carViewModel.Model,
+                CarClass = carViewModel.CarClass,
+                Year = carViewModel.Year!.Value,
+                Color = carViewModel.Color,
+                LicensePlate = carViewModel.LicensePlate,
+                Horsepower = carViewModel.Horsepower,
+                DriveType = carViewModel.DriveType,
                 ParticipantId = userId.Value
             };
 
-            _context.Cars.Add(car);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Cars.Add(car);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Ошибка при сохранении: {ex.Message}");
+                return View(carViewModel);
+            }
         }
 
-        return View(model);
+        return View(carViewModel);
     }
 
     public async Task<IActionResult> Edit(int? id)
@@ -123,7 +151,7 @@ public class CarsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, CarViewModel model)
+    public async Task<IActionResult> Edit(int id, CarViewModel carViewModel)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         if (userId == null)
@@ -131,7 +159,7 @@ public class CarsController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        if (id != model.Id)
+        if (id != carViewModel.Id)
         {
             return NotFound();
         }
@@ -147,22 +175,22 @@ public class CarsController : Controller
             }
 
             var existingCar = await _context.Cars
-                .FirstOrDefaultAsync(c => c.LicensePlate == model.LicensePlate && c.Id != id);
+                .FirstOrDefaultAsync(c => c.LicensePlate == carViewModel.LicensePlate && c.Id != id);
             
             if (existingCar != null)
             {
                 ModelState.AddModelError("LicensePlate", "Автомобиль с таким госномером уже существует");
-                return View(model);
+                return View(carViewModel);
             }
 
-            car.Brand = model.Brand;
-            car.Model = model.Model;
-            car.CarClass = model.CarClass;
-            car.Year = model.Year;
-            car.Color = model.Color;
-            car.LicensePlate = model.LicensePlate;
-            car.Horsepower = model.Horsepower;
-            car.DriveType = model.DriveType;
+            car.Brand = carViewModel.Brand;
+            car.Model = carViewModel.Model;
+            car.CarClass = carViewModel.CarClass;
+            car.Year = carViewModel.Year ?? 0;
+            car.Color = carViewModel.Color;
+            car.LicensePlate = carViewModel.LicensePlate;
+            car.Horsepower = carViewModel.Horsepower;
+            car.DriveType = carViewModel.DriveType;
 
             try
             {
@@ -180,7 +208,7 @@ public class CarsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        return View(model);
+        return View(carViewModel);
     }
 
     public async Task<IActionResult> Delete(int? id)
@@ -234,4 +262,7 @@ public class CarsController : Controller
         return _context.Cars.Any(e => e.Id == id);
     }
 }
+
+
+
 

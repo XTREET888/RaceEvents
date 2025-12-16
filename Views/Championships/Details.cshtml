@@ -1,0 +1,68 @@
+@model RaceEvents.Models.Championship
+@{
+    ViewData["Title"] = "Детали чемпионата";
+    var isAdmin = (bool)(ViewBag.IsAdmin ?? false);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>@Model.Title</h2>
+    <div>
+        @if (isAdmin)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Редактировать</a>
+        }
+        <a asp-action="Index" class="btn btn-outline-secondary">Назад к списку</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Информация о чемпионате</h5>
+            </div>
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <p><strong>Описание:</strong> @Model.Description</p>
+                }
+                <p><strong>Дата начала:</strong> @Model.StartDate.ToString("dd.MM.yyyy HH:mm")</p>
+                <p><strong>Дата окончания:</strong> @Model.EndDate.ToString("dd.MM.yyyy HH:mm")</p>
+                <p><strong>Требуемый класс автомобиля:</strong> @Model.RequiredCarClass</p>
+                <p><strong>Минимальное количество подиумов:</strong> @Model.MinPodiumsRequired</p>
+                <p><strong>Создал:</strong> @Model.Administrator.FirstName @Model.Administrator.LastName</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>События чемпионата (@Model.Events.Count)</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Events.Any())
+                {
+                    <div class="list-group">
+                        @foreach (var eventItem in Model.Events.OrderBy(e => e.Date))
+                        {
+                            <a asp-controller="Events" asp-action="Details" asp-route-id="@eventItem.Id" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">@eventItem.Title</h6>
+                                    <small>@eventItem.Date.ToString("dd.MM.yyyy")</small>
+                                </div>
+                                <p class="mb-1">@eventItem.Location</p>
+                                <small>Заявок: @eventItem.Applications.Count</small>
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">В этом чемпионате пока нет событий.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

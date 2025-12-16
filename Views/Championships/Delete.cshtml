@@ -1,0 +1,51 @@
+@model RaceEvents.Models.Championship
+@{
+    ViewData["Title"] = "Удалить чемпионат";
+}
+
+<h2>Удалить чемпионат</h2>
+<h3>Вы уверены, что хотите удалить этот чемпионат?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Название
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Title
+        </dd>
+        <dt class="col-sm-2">
+            Описание
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Description ?? "-")
+        </dd>
+        <dt class="col-sm-2">
+            Период
+        </dt>
+        <dd class="col-sm-10">
+            @Model.StartDate.ToString("dd.MM.yyyy") - @Model.EndDate.ToString("dd.MM.yyyy")
+        </dd>
+        <dt class="col-sm-2">
+            Событий
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Events.Count
+        </dd>
+    </dl>
+
+    @if (Model.Events.Any())
+    {
+        <div class="alert alert-warning">
+            <strong>Внимание!</strong> В этом чемпионате есть события. При удалении чемпионата связь с событиями будет удалена, но сами события останутся.
+        </div>
+    }
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+
+
