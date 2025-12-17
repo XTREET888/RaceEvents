@@ -1,0 +1,130 @@
+@model RaceEvents.Models.ViewModels.ApplicationViewModel
+@{
+    ViewData["Title"] = "Подать заявку";
+    var events = ViewBag.Events as List<RaceEvents.Models.Event>;
+    var cars = ViewBag.Cars as List<RaceEvents.Models.Car>;
+    var helmetTypes = ViewBag.HelmetTypes as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>;
+    var timerTypes = ViewBag.TimerTypes as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>;
+}
+
+<h2>Подать заявку на событие</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="EventId" class="form-label"></label>
+                <select asp-for="EventId" class="form-select" id="eventSelect">
+                    <option value="">-- Выберите событие --</option>
+                    @if (events != null)
+                    {
+                        @foreach (var eventItem in events)
+                        {
+                            <option value="@eventItem.Id" 
+                                    data-max-participants="@eventItem.MaxParticipants"
+                                    data-car-requirement="@eventItem.CarTypeRequirement"
+                                    data-required-class="@eventItem.RequiredCarClass"
+                                    data-max-horsepower="@eventItem.MaxHorsepower"
+                                    data-required-drive="@eventItem.RequiredDriveType">
+                                @eventItem.Title - @eventItem.Date.ToString("dd.MM.yyyy HH:mm")
+                            </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="EventId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CarId" class="form-label"></label>
+                <select asp-for="CarId" class="form-select" id="carSelect">
+                    <option value="">-- Выберите автомобиль --</option>
+                    @if (cars != null)
+                    {
+                        @foreach (var car in cars)
+                        {
+                            <option value="@car.Id" 
+                                    data-class="@car.CarClass"
+                                    data-horsepower="@car.Horsepower"
+                                    data-drive="@car.DriveType">
+                                @car.Brand @car.Model (@car.LicensePlate) - @car.CarClass
+                                @if (car.Horsepower.HasValue)
+                                {
+                                    <text> - @car.Horsepower л.с.</text>
+                                }
+                            </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CarId" class="text-danger"></span>
+                <div id="carValidationMessage" class="text-danger mt-2" style="display: none;"></div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="HelmetType" class="form-label"></label>
+                <select asp-for="HelmetType" class="form-select" asp-items="helmetTypes"></select>
+                <span asp-validation-for="HelmetType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="TimerType" class="form-label"></label>
+                <select asp-for="TimerType" class="form-select" asp-items="timerTypes"></select>
+                <span asp-validation-for="TimerType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Подать заявку</button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Информация о событии</h5>
+            </div>
+            <div class="card-body" id="eventInfo">
+                <p class="text-muted">Выберите событие для просмотра информации</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('eventSelect').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var eventInfo = document.getElementById('eventInfo');
+            
+            if (selectedOption.value) {
+                var maxParticipants = selectedOption.getAttribute('data-max-participants');
+                var carRequirement = selectedOption.getAttribute('data-car-requirement');
+                var requiredClass = selectedOption.getAttribute('data-required-class');
+                var maxHorsepower = selectedOption.getAttribute('data-max-horsepower');
+                var requiredDrive = selectedOption.getAttribute('data-required-drive');
+                
+                var html = '<p><strong>Максимум участников:</strong> ' + maxParticipants + '</p>';
+                
+                if (carRequirement === 'SPECIFIC_CLASS') {
+                    html += '<p><strong>Требуемый класс:</strong> ' + (requiredClass || 'Не указан') + '</p>';
+                }
+                
+                if (maxHorsepower) {
+                    html += '<p><strong>Макс. мощность:</strong> ' + maxHorsepower + ' л.с.</p>';
+                }
+                
+                if (requiredDrive) {
+                    html += '<p><strong>Требуемый привод:</strong> ' + requiredDrive + '</p>';
+                }
+                
+                eventInfo.innerHTML = html;
+            } else {
+                eventInfo.innerHTML = '<p class="text-muted">Выберите событие для просмотра информации</p>';
+            }
+        });
+    </script>
+}
+

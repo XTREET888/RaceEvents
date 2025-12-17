@@ -1,0 +1,79 @@
+@model IEnumerable<RaceEvents.Models.Application>
+@using RaceEvents.Models.Enums
+@{
+    ViewData["Title"] = "Мои заявки";
+}
+
+<h2>Мои заявки</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Подать новую заявку</a>
+</p>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Событие</th>
+                <th>Автомобиль</th>
+                <th>Дата подачи</th>
+                <th>Статус</th>
+                <th>Шлем</th>
+                <th>Счетчик</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.EventId">
+                            @item.Event.Title
+                        </a>
+                        <br />
+                        <small>@item.Event.Date.ToString("dd.MM.yyyy HH:mm")</small>
+                    </td>
+                    <td>
+                        @item.Car.Brand @item.Car.Model (@item.Car.LicensePlate)
+                    </td>
+                    <td>@item.ApplicationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        @switch (item.Status)
+                        {
+                            case ApplicationStatus.PENDING:
+                                <span class="badge bg-warning">ОЖИДАЕТ РАССМОТРЕНИЯ</span>
+                                break;
+                            case ApplicationStatus.APPROVED:
+                                <span class="badge bg-success">ОДОБРЕНО</span>
+                                break;
+                            case ApplicationStatus.REJECTED:
+                                <span class="badge bg-danger">ОТКЛОНЕНО</span>
+                                break;
+                            case ApplicationStatus.CANCELLED:
+                                <span class="badge bg-secondary">ОТМЕНЕНО</span>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @(item.HelmetType == HelmetType.OWN ? "Свой" : "На прокат")
+                    </td>
+                    <td>
+                        @(item.TimerType == TimerType.NONE ? "Нет" : "На прокат")
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Подробнее</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        <p>У вас пока нет заявок. <a asp-action="Create">Подать первую заявку</a></p>
+    </div>
+}
+

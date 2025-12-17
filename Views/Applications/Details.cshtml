@@ -1,0 +1,70 @@
+@model RaceEvents.Models.Application
+@using RaceEvents.Models.Enums
+@{
+    ViewData["Title"] = "Детали заявки";
+}
+
+<h2>Детали заявки</h2>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Событие</dt>
+        <dd class="col-sm-10">
+            <a asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId">
+                @Model.Event.Title
+            </a>
+            <br />
+            <small>@Model.Event.Date.ToString("dd.MM.yyyy HH:mm") - @Model.Event.Location</small>
+        </dd>
+
+        <dt class="col-sm-2">Автомобиль</dt>
+        <dd class="col-sm-10">
+            @Model.Car.Brand @Model.Car.Model (@Model.Car.LicensePlate)
+            <br />
+            <small>Класс: @Model.Car.CarClass
+            @if (Model.Car.Horsepower.HasValue)
+            {
+                <text> | Мощность: @Model.Car.Horsepower л.с.</text>
+            }
+            @if (!string.IsNullOrEmpty(Model.Car.DriveType))
+            {
+                <text> | Привод: @Model.Car.DriveType</text>
+            }
+            </small>
+        </dd>
+
+        <dt class="col-sm-2">Дата подачи</dt>
+        <dd class="col-sm-10">@Model.ApplicationDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+        <dt class="col-sm-2">Статус</dt>
+        <dd class="col-sm-10">
+            @switch (Model.Status)
+            {
+                case ApplicationStatus.PENDING:
+                    <span class="badge bg-warning">ОЖИДАЕТ РАССМОТРЕНИЯ</span>
+                    break;
+                case ApplicationStatus.APPROVED:
+                    <span class="badge bg-success">ОДОБРЕНО</span>
+                    break;
+                case ApplicationStatus.REJECTED:
+                    <span class="badge bg-danger">ОТКЛОНЕНО</span>
+                    break;
+                case ApplicationStatus.CANCELLED:
+                    <span class="badge bg-secondary">ОТМЕНЕНО</span>
+                    break;
+            }
+        </dd>
+
+        <dt class="col-sm-2">Тип шлема</dt>
+        <dd class="col-sm-10">@(Model.HelmetType == HelmetType.OWN ? "Свой" : "На прокат")</dd>
+
+        <dt class="col-sm-2">Счетчик времени</dt>
+        <dd class="col-sm-10">@(Model.TimerType == TimerType.NONE ? "Нет" : "На прокат")</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+</div>
+
