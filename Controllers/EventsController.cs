@@ -24,8 +24,6 @@ public class EventsController : Controller
             .OrderBy(e => e.Date)
             .ToListAsync();
 
-        await UpdateEventStatuses(events);
-
         return View(events);
     }
 
@@ -47,8 +45,6 @@ public class EventsController : Controller
         {
             return NotFound();
         }
-
-        await UpdateEventStatuses(new List<Event> { eventItem });
 
         return View(eventItem);
     }
@@ -296,35 +292,6 @@ public class EventsController : Controller
     private bool EventExists(int id)
     {
         return _context.Events.Any(e => e.Id == id);
-    }
-
-    private async Task UpdateEventStatuses(List<Event> events)
-    {
-        var now = DateTime.Now;
-        var updated = false;
-
-        foreach (var eventItem in events)
-        {
-            if (eventItem.Status == EventStatus.CANCELLED)
-            {
-                continue;
-            }
-
-            if (eventItem.Date < now)
-            {
-                if (eventItem.Status != EventStatus.COMPLETED)
-                {
-                    eventItem.Status = EventStatus.COMPLETED;
-                    _context.Events.Update(eventItem);
-                    updated = true;
-                }
-            }
-        }
-
-        if (updated)
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 }
 

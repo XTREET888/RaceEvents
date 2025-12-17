@@ -81,6 +81,58 @@
     @if (isAdmin && Model.AdministratorId == userId)
     {
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редактировать</a>
+        <div class="btn-group mt-2" role="group">
+            <form asp-action="ChangeStatus" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <select name="status" class="form-select d-inline-block" style="width: auto;" onchange="this.form.submit()">
+                    @if (Model.Status == RaceEvents.Models.Enums.EventStatus.UPCOMING)
+                    {
+                        <option value="UPCOMING" selected>ПРЕДСТОЯЩЕЕ</option>
+                    }
+                    else
+                    {
+                        <option value="UPCOMING">ПРЕДСТОЯЩЕЕ</option>
+                    }
+                    @if (Model.Status == RaceEvents.Models.Enums.EventStatus.REGISTRATION_OPEN)
+                    {
+                        <option value="REGISTRATION_OPEN" selected>РЕГИСТРАЦИЯ ОТКРЫТА</option>
+                    }
+                    else
+                    {
+                        <option value="REGISTRATION_OPEN">РЕГИСТРАЦИЯ ОТКРЫТА</option>
+                    }
+                    @if (Model.Status == RaceEvents.Models.Enums.EventStatus.IN_PROGRESS)
+                    {
+                        <option value="IN_PROGRESS" selected>В ПРОЦЕССЕ</option>
+                    }
+                    else
+                    {
+                        <option value="IN_PROGRESS">В ПРОЦЕССЕ</option>
+                    }
+                    @if (Model.Status == RaceEvents.Models.Enums.EventStatus.COMPLETED)
+                    {
+                        <option value="COMPLETED" selected>ЗАВЕРШЕНО</option>
+                    }
+                    else
+                    {
+                        <option value="COMPLETED">ЗАВЕРШЕНО</option>
+                    }
+                    @if (Model.Status == RaceEvents.Models.Enums.EventStatus.CANCELLED)
+                    {
+                        <option value="CANCELLED" selected>ОТМЕНЕНО</option>
+                    }
+                    else
+                    {
+                        <option value="CANCELLED">ОТМЕНЕНО</option>
+                    }
+                </select>
+                @Html.AntiForgeryToken()
+            </form>
+        </div>
+    }
+    @if (!isAdmin && userId != null && Model.Status == RaceEvents.Models.Enums.EventStatus.REGISTRATION_OPEN)
+    {
+        <a asp-controller="Applications" asp-action="Create" asp-route-eventId="@Model.Id" class="btn btn-success">Подать заявку</a>
     }
     <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
 </div>
