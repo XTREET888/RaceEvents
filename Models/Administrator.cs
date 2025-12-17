@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RaceEvents.Models;
 
-[Table("Administrators")]
 public class Administrator : User
 {
     [StringLength(100)]
@@ -14,5 +13,6 @@ public class Administrator : User
     public DateTime HireDate { get; set; } = DateTime.Now;
 
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
+    public virtual ICollection<Championship> Championships { get; set; } = new List<Championship>();
 }
 

@@ -39,3 +39,10 @@ public class Championship
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 }
 
+
+
+
+
+
+
+

@@ -49,7 +49,7 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Championship>()
             .HasOne(c => c.Administrator)
-            .WithMany()
+            .WithMany(a => a.Championships)
             .HasForeignKey(c => c.AdministratorId)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -92,6 +92,34 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.Role)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Event>()
+            .Property(e => e.Status)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Event>()
+            .Property(e => e.Type)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Event>()
+            .Property(e => e.CarTypeRequirement)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Application>()
+            .Property(a => a.Status)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Application>()
+            .Property(a => a.HelmetType)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Application>()
+            .Property(a => a.TimerType)
+            .HasConversion<string>();
 
         modelBuilder.Entity<Car>()
             .HasIndex(c => c.LicensePlate)
