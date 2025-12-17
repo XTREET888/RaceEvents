@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RaceEvents.Data;
 using RaceEvents.Models;
@@ -23,6 +24,8 @@ public class EventsController : Controller
             .OrderBy(e => e.Date)
             .ToListAsync();
 
+        await UpdateEventStatuses(events);
+
         return View(events);
     }
 
@@ -45,6 +48,8 @@ public class EventsController : Controller
             return NotFound();
         }
 
+        await UpdateEventStatuses(new List<Event> { eventItem });
+
         return View(eventItem);
     }
 
@@ -59,6 +64,20 @@ public class EventsController : Controller
         }
 
         ViewBag.Championships = _context.Championships.ToList();
+        
+        ViewBag.EventTypes = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "WINTER", Text = "ЗИМНИЙ" },
+            new SelectListItem { Value = "SUMMER", Text = "ЛЕТНИЙ" },
+            new SelectListItem { Value = "TRACK_DAY", Text = "ТРЕК ДЕНЬ" }
+        };
+        
+        ViewBag.CarTypeRequirements = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "ANY", Text = "ЛЮБОЙ" },
+            new SelectListItem { Value = "SPECIFIC_CLASS", Text = "ОПРЕДЕЛЕННЫЙ КЛАСС" }
+        };
+        
         return View();
     }
 
@@ -101,6 +120,20 @@ public class EventsController : Controller
         }
 
         ViewBag.Championships = _context.Championships.ToList();
+        
+        ViewBag.EventTypes = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "WINTER", Text = "ЗИМНИЙ" },
+            new SelectListItem { Value = "SUMMER", Text = "ЛЕТНИЙ" },
+            new SelectListItem { Value = "TRACK_DAY", Text = "ТРЕК ДЕНЬ" }
+        };
+        
+        ViewBag.CarTypeRequirements = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "ANY", Text = "ЛЮБОЙ" },
+            new SelectListItem { Value = "SPECIFIC_CLASS", Text = "ОПРЕДЕЛЕННЫЙ КЛАСС" }
+        };
+        
         return View(model);
     }
 
@@ -145,6 +178,20 @@ public class EventsController : Controller
         };
 
         ViewBag.Championships = _context.Championships.ToList();
+        
+        ViewBag.EventTypes = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "WINTER", Text = "ЗИМНИЙ" },
+            new SelectListItem { Value = "SUMMER", Text = "ЛЕТНИЙ" },
+            new SelectListItem { Value = "TRACK_DAY", Text = "ТРЕК ДЕНЬ" }
+        };
+        
+        ViewBag.CarTypeRequirements = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "ANY", Text = "ЛЮБОЙ" },
+            new SelectListItem { Value = "SPECIFIC_CLASS", Text = "ОПРЕДЕЛЕННЫЙ КЛАСС" }
+        };
+        
         return View(model);
     }
 
@@ -205,6 +252,20 @@ public class EventsController : Controller
         }
 
         ViewBag.Championships = _context.Championships.ToList();
+        
+        ViewBag.EventTypes = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "WINTER", Text = "ЗИМНИЙ" },
+            new SelectListItem { Value = "SUMMER", Text = "ЛЕТНИЙ" },
+            new SelectListItem { Value = "TRACK_DAY", Text = "ТРЕК ДЕНЬ" }
+        };
+        
+        ViewBag.CarTypeRequirements = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "ANY", Text = "ЛЮБОЙ" },
+            new SelectListItem { Value = "SPECIFIC_CLASS", Text = "ОПРЕДЕЛЕННЫЙ КЛАСС" }
+        };
+        
         return View(model);
     }
 
@@ -236,5 +297,37 @@ public class EventsController : Controller
     {
         return _context.Events.Any(e => e.Id == id);
     }
+
+    private async Task UpdateEventStatuses(List<Event> events)
+    {
+        var now = DateTime.Now;
+        var updated = false;
+
+        foreach (var eventItem in events)
+        {
+            if (eventItem.Status == EventStatus.CANCELLED)
+            {
+                continue;
+            }
+
+            if (eventItem.Date < now)
+            {
+                if (eventItem.Status != EventStatus.COMPLETED)
+                {
+                    eventItem.Status = EventStatus.COMPLETED;
+                    _context.Events.Update(eventItem);
+                    updated = true;
+                }
+            }
+        }
+
+        if (updated)
+        {
+            await _context.SaveChangesAsync();
+        }
+    }
 }
+
+
+
 

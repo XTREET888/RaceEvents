@@ -50,13 +50,13 @@
 
             <div class="form-group mb-3">
                 <label asp-for="Type" class="form-label"></label>
-                <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<RaceEvents.Models.Enums.EventType>()"></select>
+                <select asp-for="Type" class="form-select" asp-items="ViewBag.EventTypes"></select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
                 <label asp-for="CarTypeRequirement" class="form-label"></label>
-                <select asp-for="CarTypeRequirement" class="form-select" asp-items="Html.GetEnumSelectList<RaceEvents.Models.Enums.CarTypeRequirement>()"></select>
+                <select asp-for="CarTypeRequirement" class="form-select" asp-items="ViewBag.CarTypeRequirements"></select>
                 <span asp-validation-for="CarTypeRequirement" class="text-danger"></span>
             </div>
 
@@ -110,4 +110,7 @@
         });
     </script>
 }
+
+
+
 

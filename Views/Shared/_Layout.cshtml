@@ -24,11 +24,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Events" asp-action="Index">События</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Championships" asp-action="Index">Чемпионаты</a>
+                        </li>
                         @if (Context.Session.GetInt32("UserId") != null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Cars" asp-action="Index">Мои автомобили</a>
-                            </li>
+                            @if (Context.Session.GetString("UserRole") != "ADMINISTRATOR")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Cars" asp-action="Index">Мои автомобили</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index">Профиль</a>
                             </li>
@@ -66,11 +72,6 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - RaceEvents - <a asp-area="" asp-controller="Home" asp-action="Privacy">Конфиденциальность</a>
-        </div>
-    </footer>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

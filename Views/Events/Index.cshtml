@@ -34,8 +34,18 @@
                 <td>@item.Title</td>
                 <td>@item.Date.ToString("dd.MM.yyyy HH:mm")</td>
                 <td>@item.Location</td>
-                <td>@item.Type</td>
-                <td>@item.Status</td>
+                <td>
+                    @(item.Type == RaceEvents.Models.Enums.EventType.WINTER ? "ЗИМНИЙ" :
+                      item.Type == RaceEvents.Models.Enums.EventType.SUMMER ? "ЛЕТНИЙ" :
+                      item.Type == RaceEvents.Models.Enums.EventType.TRACK_DAY ? "ТРЕК ДЕНЬ" : item.Type.ToString())
+                </td>
+                <td>
+                    @(item.Status == RaceEvents.Models.Enums.EventStatus.UPCOMING ? "ПРЕДСТОЯЩЕЕ" :
+                      item.Status == RaceEvents.Models.Enums.EventStatus.REGISTRATION_OPEN ? "РЕГИСТРАЦИЯ ОТКРЫТА" :
+                      item.Status == RaceEvents.Models.Enums.EventStatus.IN_PROGRESS ? "В ПРОЦЕССЕ" :
+                      item.Status == RaceEvents.Models.Enums.EventStatus.COMPLETED ? "ЗАВЕРШЕНО" :
+                      item.Status == RaceEvents.Models.Enums.EventStatus.CANCELLED ? "ОТМЕНЕНО" : item.Status.ToString())
+                </td>
                 <td>@item.Applications.Count(a => a.Status == RaceEvents.Models.Enums.ApplicationStatus.APPROVED) / @item.MaxParticipants</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Подробнее</a>

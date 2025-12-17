@@ -17,36 +17,67 @@ public class ProfileController : Controller
     public async Task<IActionResult> Index()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
+        var userRole = HttpContext.Session.GetString("UserRole");
+        
         if (userId == null)
         {
             return RedirectToAction("Login", "Account");
         }
 
-        var participant = await _context.Participants
-            .Include(p => p.Cars)
-            .Include(p => p.Applications)
-                .ThenInclude(a => a.Event)
-            .Include(p => p.Applications)
-                .ThenInclude(a => a.Car)
-            .Include(p => p.Applications)
-                .ThenInclude(a => a.FinalResult)
-            .FirstOrDefaultAsync(p => p.Id == userId);
-
-        if (participant == null)
+        if (userRole == "ADMINISTRATOR")
         {
-            return NotFound();
+            var administrator = await _context.Administrators
+                .Include(a => a.Events)
+                    .ThenInclude(e => e.Championship)
+                .Include(a => a.Events)
+                    .ThenInclude(e => e.Applications)
+                .FirstOrDefaultAsync(a => a.Id == userId);
+
+            if (administrator == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.UserRole = "ADMINISTRATOR";
+            ViewBag.EventsCount = administrator.Events.Count;
+            ViewBag.ChampionshipsCount = await _context.Championships
+                .Where(c => c.AdministratorId == userId)
+                .CountAsync();
+
+            return View("AdminProfile", administrator);
         }
+        else
+        {
+            var participant = await _context.Participants
+                .Include(p => p.Cars)
+                .Include(p => p.Applications)
+                    .ThenInclude(a => a.Event)
+                .Include(p => p.Applications)
+                    .ThenInclude(a => a.Car)
+                .Include(p => p.Applications)
+                    .ThenInclude(a => a.FinalResult)
+                .FirstOrDefaultAsync(p => p.Id == userId);
 
-        var applicationsWithPodiums = participant.Applications
-            .Where(a => a.FinalResult != null && a.FinalResult.Position <= 3)
-            .OrderBy(a => a.Event.Date)
-            .ToList();
+            if (participant == null)
+            {
+                return NotFound();
+            }
 
-        ViewBag.PodiumCount = applicationsWithPodiums.Count;
-        ViewBag.BestLapTime = participant.BestLapTime;
-        ViewBag.ApplicationsWithPodiums = applicationsWithPodiums;
+            var applicationsWithPodiums = participant.Applications
+                .Where(a => a.FinalResult != null && a.FinalResult.Position <= 3)
+                .OrderBy(a => a.Event.Date)
+                .ToList();
 
-        return View(participant);
+            ViewBag.PodiumCount = applicationsWithPodiums.Count;
+            ViewBag.BestLapTime = participant.BestLapTime;
+            ViewBag.ApplicationsWithPodiums = applicationsWithPodiums;
+            ViewBag.UserRole = "PARTICIPANT";
+
+            return View(participant);
+        }
     }
 }
+
+
+
 
