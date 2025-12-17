@@ -34,6 +34,15 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Cars" asp-action="Index">Мои автомобили</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Applications" asp-action="Index">Мои заявки</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="ApplicationsAdmin" asp-action="Index">Управление заявками</a>
+                                </li>
                             }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index">Профиль</a>
