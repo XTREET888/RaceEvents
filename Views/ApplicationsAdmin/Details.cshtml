@@ -1,0 +1,168 @@
+@model RaceEvents.Models.Application
+@using RaceEvents.Models.Enums
+@{
+    ViewData["Title"] = "Детали заявки";
+    var carValidation = ViewBag.CarValidation as (bool IsValid, string ErrorMessage)?;
+    var approvedCount = ViewBag.ApprovedCount as int? ?? 0;
+    var maxParticipants = ViewBag.MaxParticipants as int? ?? 0;
+    var canApprove = ViewBag.CanApprove as bool? ?? false;
+}
+
+<h2>Детали заявки</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Информация о заявке</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Статус</dt>
+                    <dd class="col-sm-8">
+                        @switch (Model.Status)
+                        {
+                            case ApplicationStatus.PENDING:
+                                <span class="badge bg-warning">ОЖИДАЕТ РАССМОТРЕНИЯ</span>
+                                break;
+                            case ApplicationStatus.APPROVED:
+                                <span class="badge bg-success">ОДОБРЕНО</span>
+                                break;
+                            case ApplicationStatus.REJECTED:
+                                <span class="badge bg-danger">ОТКЛОНЕНО</span>
+                                break;
+                            case ApplicationStatus.CANCELLED:
+                                <span class="badge bg-secondary">ОТМЕНЕНО</span>
+                                break;
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">Дата подачи</dt>
+                    <dd class="col-sm-8">@Model.ApplicationDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                    <dt class="col-sm-4">Шлем</dt>
+                    <dd class="col-sm-8">@(Model.HelmetType == HelmetType.OWN ? "Свой" : "На прокат")</dd>
+
+                    <dt class="col-sm-4">Счетчик времени</dt>
+                    <dd class="col-sm-8">@(Model.TimerType == TimerType.NONE ? "Нет" : "На прокат")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Участник</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Имя:</strong> @Model.Participant.FirstName @Model.Participant.LastName</p>
+                <p><strong>Email:</strong> @Model.Participant.Email</p>
+                <p><strong>Телефон:</strong> @(Model.Participant.Phone ?? "-")</p>
+                <p><strong>Водительское удостоверение:</strong> @Model.Participant.DriverLicense</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Событие</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Название:</strong> 
+                    <a asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId">
+                        @Model.Event.Title
+                    </a>
+                </p>
+                <p><strong>Дата:</strong> @Model.Event.Date.ToString("dd.MM.yyyy HH:mm")</p>
+                <p><strong>Место:</strong> @Model.Event.Location</p>
+                <p><strong>Максимум участников:</strong> @Model.Event.MaxParticipants</p>
+                <p><strong>Одобрено заявок:</strong> @approvedCount / @maxParticipants</p>
+                @if (Model.Event.Championship != null)
+                {
+                    <p><strong>Чемпионат:</strong> @Model.Event.Championship.Title</p>
+                }
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Автомобиль</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Марка/Модель:</strong> @Model.Car.Brand @Model.Car.Model</p>
+                <p><strong>Госномер:</strong> @Model.Car.LicensePlate</p>
+                <p><strong>Класс:</strong> @Model.Car.CarClass</p>
+                @if (Model.Car.Horsepower.HasValue)
+                {
+                    <p><strong>Мощность:</strong> @Model.Car.Horsepower л.с.</p>
+                }
+                @if (!string.IsNullOrEmpty(Model.Car.DriveType))
+                {
+                    <p><strong>Привод:</strong> @Model.Car.DriveType</p>
+                }
+            </div>
+        </div>
+
+        @if (carValidation.HasValue)
+        {
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>Проверка соответствия регламенту</h5>
+                </div>
+                <div class="card-body">
+                    @if (carValidation.Value.IsValid)
+                    {
+                        <div class="alert alert-success">
+                            <strong>✓ Автомобиль соответствует регламенту события</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <strong>✗ Автомобиль не соответствует регламенту:</strong><br />
+                            @carValidation.Value.ErrorMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="mt-3">
+    @if (Model.Status == ApplicationStatus.PENDING)
+    {
+        <form asp-action="Approve" method="post" class="d-inline">
+            <input type="hidden" name="id" value="@Model.Id" />
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-success" @(!canApprove || !carValidation?.IsValid == true ? "disabled" : "")>
+                Одобрить заявку
+            </button>
+        </form>
+        <form asp-action="Reject" method="post" class="d-inline">
+            <input type="hidden" name="id" value="@Model.Id" />
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите отклонить эту заявку?');">
+                Отклонить заявку
+            </button>
+        </form>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+</div>
+

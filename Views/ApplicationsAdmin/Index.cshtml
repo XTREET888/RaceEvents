@@ -1,0 +1,112 @@
+@model IEnumerable<RaceEvents.Models.Application>
+@using RaceEvents.Models.Enums
+@{
+    ViewData["Title"] = "Управление заявками";
+    var statusFilter = ViewBag.StatusFilter as string;
+    var pendingCount = ViewBag.PendingCount as int? ?? 0;
+    var approvedCount = ViewBag.ApprovedCount as int? ?? 0;
+    var rejectedCount = ViewBag.RejectedCount as int? ?? 0;
+}
+
+<h2>Управление заявками</h2>
+
+<div class="mb-3">
+    <div class="btn-group" role="group">
+        <a asp-action="Index" asp-route-status="" class="btn btn-outline-primary @(string.IsNullOrEmpty(statusFilter) ? "active" : "")">
+            Ожидают рассмотрения (@pendingCount)
+        </a>
+        <a asp-action="Index" asp-route-status="APPROVED" class="btn btn-outline-success @(statusFilter == "APPROVED" ? "active" : "")">
+            Одобренные (@approvedCount)
+        </a>
+        <a asp-action="Index" asp-route-status="REJECTED" class="btn btn-outline-danger @(statusFilter == "REJECTED" ? "active" : "")">
+            Отклоненные (@rejectedCount)
+        </a>
+        <a asp-action="Index" asp-route-status="ALL" class="btn btn-outline-secondary @(statusFilter == "ALL" ? "active" : "")">
+            Все
+        </a>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Участник</th>
+                <th>Событие</th>
+                <th>Автомобиль</th>
+                <th>Дата подачи</th>
+                <th>Статус</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Participant.FirstName @item.Participant.LastName
+                        <br />
+                        <small>@item.Participant.Email</small>
+                    </td>
+                    <td>
+                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.EventId">
+                            @item.Event.Title
+                        </a>
+                        <br />
+                        <small>@item.Event.Date.ToString("dd.MM.yyyy HH:mm")</small>
+                    </td>
+                    <td>
+                        @item.Car.Brand @item.Car.Model
+                        <br />
+                        <small>@item.Car.LicensePlate - @item.Car.CarClass</small>
+                    </td>
+                    <td>@item.ApplicationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        @switch (item.Status)
+                        {
+                            case ApplicationStatus.PENDING:
+                                <span class="badge bg-warning">ОЖИДАЕТ РАССМОТРЕНИЯ</span>
+                                break;
+                            case ApplicationStatus.APPROVED:
+                                <span class="badge bg-success">ОДОБРЕНО</span>
+                                break;
+                            case ApplicationStatus.REJECTED:
+                                <span class="badge bg-danger">ОТКЛОНЕНО</span>
+                                break;
+                            case ApplicationStatus.CANCELLED:
+                                <span class="badge bg-secondary">ОТМЕНЕНО</span>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Подробнее</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        <p>Нет заявок с выбранным статусом.</p>
+    </div>
+}
+
