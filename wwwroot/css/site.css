@@ -1,22 +1,571 @@
+:root {
+    --racing-red: #DC143C;
+    --racing-orange: #FF6B35;
+    --racing-yellow: #FFD700;
+    --racing-black: #1a1a1a;
+    --racing-dark: #2d2d2d;
+    --racing-gray: #4a4a4a;
+    --racing-light-gray: #e0e0e0;
+    --racing-white: #ffffff;
+    --racing-blue: #0066cc;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(220, 20, 60, 0.03) 2px,
+            rgba(220, 20, 60, 0.03) 4px
+        );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+.navbar {
+    background: linear-gradient(135deg, var(--racing-black) 0%, var(--racing-dark) 100%) !important;
+    border-bottom: 3px solid var(--racing-red) !important;
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--racing-white) !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.2;
+}
+
+.navbar-brand span {
+    display: inline-block;
+}
+
+.navbar-brand:hover {
+    color: var(--racing-red) !important;
+    text-shadow: 0 0 15px rgba(220, 20, 60, 0.8);
+    transform: scale(1.05);
+}
+
+.nav-link {
+    color: var(--racing-light-gray) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem 1rem !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--racing-red);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover {
+    color: var(--racing-red) !important;
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+.navbar-text {
+    color: var(--racing-light-gray) !important;
+    font-weight: 500;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0.6rem 1.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--racing-red) 0%, var(--racing-orange) 100%);
+    color: var(--racing-white);
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--racing-orange) 0%, var(--racing-red) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.6);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: var(--racing-white);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: var(--racing-white);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.6);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--racing-gray) 0%, var(--racing-dark) 100%);
+    color: var(--racing-white);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--racing-dark) 0%, var(--racing-gray) 100%);
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary,
+.btn-outline-info,
+.btn-outline-success,
+.btn-outline-danger {
+    border-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-info:hover,
+.btn-outline-success:hover,
+.btn-outline-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card {
+    background: linear-gradient(135deg, var(--racing-dark) 0%, var(--racing-gray) 100%);
+    border: 1px solid rgba(220, 20, 60, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    color: #e8e8e8;
+    margin-bottom: 1.5rem;
+}
+
+.card p,
+.card-body p,
+.card-body span,
+.card-body div {
+    color: #ffffff !important;
+}
+
+.card-body strong {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(220, 20, 60, 0.4);
+    border-color: var(--racing-red);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--racing-black) 0%, var(--racing-dark) 100%);
+    border-bottom: 2px solid var(--racing-red);
+    color: var(--racing-white);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 1rem 1.5rem;
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.table {
+    background: var(--racing-dark) !important;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: #ffffff !important;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #000000 0%, var(--racing-black) 100%) !important;
+    color: var(--racing-white) !important;
+}
+
+.table thead th {
+    border-bottom: 3px solid var(--racing-red) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 1rem;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #000000 0%, var(--racing-black) 100%) !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background: rgba(220, 20, 60, 0.1);
+    transform: scale(1.01);
+}
+
+.table tbody td {
+    padding: 1rem;
+    color: #ffffff !important;
+    background-color: transparent;
+}
+
+.table tbody td a {
+    color: #4da6ff !important;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.table tbody td a:hover {
+    color: #66b3ff !important;
+    text-decoration: underline;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(220, 20, 60, 0.05);
+}
+
+.table-warning {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 107, 53, 0.2) 100%) !important;
+    border-left: 4px solid var(--racing-yellow);
+}
+
+.form-control,
+.form-select {
+    background: var(--racing-dark);
+    border: 2px solid var(--racing-gray);
+    color: var(--racing-light-gray);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: var(--racing-dark);
+    border-color: var(--racing-red);
+    color: var(--racing-white);
+    box-shadow: 0 0 0 0.2rem rgba(220, 20, 60, 0.25);
+    outline: none;
+}
+
+.form-label {
+    color: #e8e8e8;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+    color: #e8e8e8 !important;
+}
+
+.form-control::placeholder {
+    color: #999 !important;
+    opacity: 0.7;
+}
+
+.alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 1rem 1.5rem;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.2) 0%, rgba(32, 201, 151, 0.2) 100%);
+    color: #d4edda;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.2) 0%, rgba(200, 35, 51, 0.2) 100%);
+    color: #f8d7da;
+    border-left: 4px solid #dc3545;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, rgba(0, 102, 204, 0.2) 0%, rgba(0, 123, 255, 0.2) 100%);
+    color: #d1ecf1;
+    border-left: 4px solid #0066cc;
+}
+
+.badge {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.bg-secondary {
+    background: linear-gradient(135deg, var(--racing-gray) 0%, var(--racing-dark) 100%) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, var(--racing-yellow) 0%, var(--racing-orange) 100%) !important;
+    color: var(--racing-black) !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(220, 20, 60, 0.3);
+}
+
+p, span:not(.badge):not(.navbar-text), div:not(.card):not(.alert), td, th, li {
+    color: #ffffff;
+}
+
+.text-dark {
+    color: #ffffff !important;
+}
+
+.navbar-text {
+    color: #ffffff !important;
+}
+
+h2 {
+    border-bottom: 3px solid var(--racing-red);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+}
+
+.text-center h1,
+.text-center h2 {
+    display: block;
+    text-align: center;
+    margin: 0 auto 1rem;
+}
+
+.display-4 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--racing-red) 0%, var(--racing-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    margin-bottom: 1rem;
+}
+
+.btn-group .btn {
+    margin: 0 0.25rem;
+}
+
+.btn-group .btn.active {
+    background: linear-gradient(135deg, var(--racing-red) 0%, var(--racing-orange) 100%);
+    color: var(--racing-white);
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+}
+
+.text-muted {
+    color: var(--racing-gray) !important;
+}
+
+.text-danger {
+    color: var(--racing-red) !important;
+}
+
+.text-success {
+    color: #28a745 !important;
+}
+
+.text-warning {
+    color: var(--racing-yellow) !important;
+}
+
+.text-info {
+    color: var(--racing-blue) !important;
+}
+
+main {
+    padding: 2rem 0;
+    min-height: calc(100vh - 200px);
+}
+
+.btn-link {
+    color: var(--racing-red) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-link:hover {
+    color: var(--racing-orange) !important;
+    text-decoration: underline;
+}
+
+.validation-summary-errors,
+.text-danger {
+    color: var(--racing-red) !important;
+}
+
+.validation-summary-errors ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.validation-summary-errors li {
+    padding: 0.5rem;
+    background: rgba(220, 20, 60, 0.1);
+    border-left: 3px solid var(--racing-red);
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.table tbody tr.podium-1 {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 200, 0, 0.3) 100%) !important;
+    border-left: 5px solid #FFD700 !important;
+    color: #000000 !important;
+}
+
+.table tbody tr.podium-1 td {
+    color: #000000 !important;
+    font-weight: 600;
+    background: transparent !important;
+}
+
+.table tbody tr.podium-1 td strong {
+    color: #000000 !important;
+}
+
+.table tbody tr.podium-2 {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.5) 0%, rgba(180, 180, 180, 0.4) 100%) !important;
+    border-left: 5px solid #C0C0C0 !important;
+    color: #000000 !important;
+}
+
+.table tbody tr.podium-2 td {
+    color: #000000 !important;
+    font-weight: 600;
+    background: transparent !important;
+}
+
+.table tbody tr.podium-2 td strong {
+    color: #000000 !important;
+}
+
+.table tbody tr.podium-3 {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.5) 0%, rgba(184, 115, 45, 0.4) 100%) !important;
+    border-left: 5px solid #CD7F32 !important;
+    color: #000000 !important;
+}
+
+.table tbody tr.podium-3 td {
+    color: #000000 !important;
+    font-weight: 600;
+    background: transparent !important;
+}
+
+.table tbody tr.podium-3 td strong {
+    color: #000000 !important;
+}
+
+.table-warning {
+    background: rgba(255, 193, 7, 0.3) !important;
+    color: #000000 !important;
+}
+
+.table-warning td {
+    color: #000000 !important;
+    background: transparent !important;
 }
