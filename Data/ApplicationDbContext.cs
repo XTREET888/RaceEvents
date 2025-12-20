@@ -124,6 +124,41 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Car>()
             .HasIndex(c => c.LicensePlate)
             .IsUnique();
+
+        modelBuilder.Entity<LapTime>()
+            .Property(lt => lt.Time)
+            .HasConversion(
+                v => v,
+                v => v)
+            .HasColumnType("time(6)");
+
+        modelBuilder.Entity<FinalResult>()
+            .Property(fr => fr.BestLapTime)
+            .HasConversion(
+                v => v,
+                v => v)
+            .HasColumnType("time(6)");
+
+        modelBuilder.Entity<FinalResult>()
+            .Property(fr => fr.AverageLapTime)
+            .HasConversion(
+                v => v,
+                v => v)
+            .HasColumnType("time(6)");
+
+        modelBuilder.Entity<FinalResult>()
+            .Property(fr => fr.TotalTime)
+            .HasConversion(
+                v => v,
+                v => v)
+            .HasColumnType("time(6)");
+
+        modelBuilder.Entity<Participant>()
+            .Property(p => p.BestLapTime)
+            .HasConversion(
+                v => v.HasValue ? v.Value : (TimeSpan?)null,
+                v => v)
+            .HasColumnType("time(6)");
     }
 }
 
