@@ -2,8 +2,46 @@
     ViewData["Title"] = "Главная";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Добро пожаловать!</h1>
-    <p>Система управления автомобильными спортивными мероприятиями</p>
+<div class="text-center mb-5">
+    <h1 class="display-4 mb-4"><span style="font-size: 3rem; margin-right: 0.5rem;">🏁</span>RaceEvents</h1>
+    <p class="lead mb-4" style="font-size: 1.5rem; color: var(--racing-light-gray);">
+        Система управления автомобильными спортивными мероприятиями
+    </p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header text-center">
+                <h4>🏆 События</h4>
+            </div>
+            <div class="card-body text-center">
+                <p>Просматривайте и регистрируйтесь на предстоящие гонки и трек-дни</p>
+                <a asp-controller="Events" asp-action="Index" class="btn btn-primary">Перейти к событиям</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header text-center">
+                <h4>🏁 Чемпионаты</h4>
+            </div>
+            <div class="card-body text-center">
+                <p>Участвуйте в серии соревнований и соревнуйтесь за титул чемпиона</p>
+                <a asp-controller="Championships" asp-action="Index" class="btn btn-primary">Перейти к чемпионатам</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header text-center">
+                <h4>📊 Результаты</h4>
+            </div>
+            <div class="card-body text-center">
+                <p>Следите за результатами гонок и временами кругов участников</p>
+                <a asp-controller="Results" asp-action="Index" class="btn btn-primary">Перейти к результатам</a>
+            </div>
+        </div>
+    </div>
 </div>
 
