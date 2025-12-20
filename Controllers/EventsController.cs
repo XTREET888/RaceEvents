@@ -21,6 +21,7 @@ public class EventsController : Controller
     {
         var events = await _context.Events
             .Include(e => e.Administrator)
+            .Include(e => e.Applications)
             .OrderBy(e => e.Date)
             .ToListAsync();
 
