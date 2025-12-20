@@ -1,0 +1,78 @@
+@model RaceEvents.Models.ViewModels.LapTimeViewModel
+@{
+    ViewData["Title"] = "Записать время круга";
+    var events = ViewBag.Events as Microsoft.AspNetCore.Mvc.Rendering.SelectList;
+    var applications = ViewBag.Applications as Microsoft.AspNetCore.Mvc.Rendering.SelectList;
+}
+
+<h2>Записать время круга</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="EventId" class="form-label"></label>
+                <select asp-for="EventId" class="form-select" id="eventSelect" onchange="loadApplications()">
+                    <option value="">-- Выберите событие --</option>
+                    @if (events != null)
+                    {
+                        @foreach (var item in events)
+                        {
+                            <option value="@item.Value" selected="@(item.Selected ? "selected" : null)">@item.Text</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="EventId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ApplicationId" class="form-label"></label>
+                <select asp-for="ApplicationId" class="form-select" id="applicationSelect">
+                    <option value="">-- Сначала выберите событие --</option>
+                    @if (applications != null)
+                    {
+                        @foreach (var item in applications)
+                        {
+                            <option value="@item.Value" selected="@(item.Selected ? "selected" : null)">@item.Text</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="ApplicationId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="LapNumber" class="form-label"></label>
+                <input asp-for="LapNumber" class="form-control" />
+                <span asp-validation-for="LapNumber" class="text-danger"></span>
+                <small class="form-text text-muted">Номер круга (обычно следующий после последнего записанного)</small>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Time" class="form-label"></label>
+                <input asp-for="Time" class="form-control" placeholder="ММ:СС.С или ЧЧ:ММ:СС" />
+                <span asp-validation-for="Time" class="text-danger"></span>
+                <small class="form-text text-muted">Формат: ММ:СС.С (например, 01:23.4) или ЧЧ:ММ:СС (например, 01:23:45)</small>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Записать время</button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadApplications() {
+            var eventId = document.getElementById('eventSelect').value;
+            if (eventId) {
+                window.location.href = '@Url.Action("Create", "LapTimes")?eventId=' + eventId;
+            }
+        }
+    </script>
+}
+

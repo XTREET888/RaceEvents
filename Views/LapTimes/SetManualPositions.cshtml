@@ -1,0 +1,68 @@
+@model RaceEvents.Models.ViewModels.EventManualPositionsViewModel
+@{
+    ViewData["Title"] = "Задать места вручную";
+}
+
+<h2>Задать места вручную: @Model.EventTitle</h2>
+
+<hr />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="alert alert-info">
+    <strong>Внимание!</strong> Задайте места участникам вручную. Места должны быть уникальными (1, 2, 3, ...). 
+    Участники без указанного места (0) не будут включены в результаты.
+</div>
+
+<form asp-action="SetManualPositions" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    
+    <input type="hidden" asp-for="EventId" />
+    <input type="hidden" asp-for="EventTitle" />
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Участник</th>
+                    <th>Автомобиль</th>
+                    <th>Место</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Positions.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.Positions[i].ParticipantName
+                            <input type="hidden" asp-for="Positions[i].ApplicationId" />
+                            <input type="hidden" asp-for="Positions[i].ParticipantName" />
+                            <input type="hidden" asp-for="Positions[i].CarInfo" />
+                        </td>
+                        <td>@Model.Positions[i].CarInfo</td>
+                        <td>
+                            <input asp-for="Positions[i].Position" class="form-control" style="width: 100px;" min="0" />
+                            <span asp-validation-for="Positions[i].Position" class="text-danger"></span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Сохранить места</button>
+        <a asp-action="Index" asp-route-eventId="@Model.EventId" class="btn btn-secondary">Отмена</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
