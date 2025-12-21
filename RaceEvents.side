@@ -1,0 +1,674 @@
+{
+  "id": "56270268-4992-4c2a-82e3-a4f94b3af181",
+  "version": "2.0",
+  "name": "RaceEvents",
+  "url": "https://localhost:7030",
+  "tests": [{
+    "id": "bc0ba217-dbee-499c-97f7-a00ca2520b2c",
+    "name": "Вход участника в систему",
+    "commands": [{
+      "id": "75cb822f-b305-4b3d-b8a1-ba545c25f9ca",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4ea5249d-9a82-4560-8f93-a6076ec801d0",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1355x816",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ae7aa96c-89fc-4cdd-8f29-8ef964afeaab",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Вход",
+      "targets": [
+        ["linkText=Вход", "linkText"],
+        ["css=.navbar-nav:nth-child(2) > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Вход')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Account/Login')]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Вход')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0e3b65c-1b43-4f58-a207-bd1733cfa35b",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bbec8a00-de3e-47cb-b7a1-0567ac210ff2",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "example3@mail.ru"
+    }, {
+      "id": "7e0106a6-af52-4f31-8fa6-795ab4b1c557",
+      "comment": "",
+      "command": "click",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "91c53e93-8c52-40bb-aacb-ac4c180db83c",
+      "comment": "",
+      "command": "type",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "2281337"
+    }, {
+      "id": "c9bf9794-5a31-449f-b858-a127953d4cdb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[4]/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "2c17a84f-d9c6-4602-b020-31bbfb202a8b",
+    "name": "Добавление автомобиля",
+    "commands": [{
+      "id": "fe2846bd-8142-4d7e-ace1-62a2ccae0d1c",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3563162b-da8e-40bc-a9d0-5ca2a9f422f8",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1355x816",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "28d1f65e-f9a8-401b-9940-8f242eb486fc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Мои автомобили",
+      "targets": [
+        ["linkText=Мои автомобили", "linkText"],
+        ["css=.nav-item:nth-child(5) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Мои автомобили')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Cars')]", "xpath:href"],
+        ["xpath=//li[5]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Мои автомобили')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2ad1ba48-17e6-483f-be22-68208dd0a7c4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'Добавить автомобиль')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Cars/Create')]", "xpath:href"],
+        ["xpath=//p/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b0eddad1-aec7-4ac2-a341-b4c6ac53cf86",
+      "comment": "",
+      "command": "click",
+      "target": "id=Brand",
+      "targets": [
+        ["id=Brand", "id"],
+        ["name=Brand", "name"],
+        ["css=#Brand", "css:finder"],
+        ["xpath=//input[@id='Brand']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1b3ab301-33ac-4a7a-928d-a40728e261e9",
+      "comment": "",
+      "command": "type",
+      "target": "id=Brand",
+      "targets": [
+        ["id=Brand", "id"],
+        ["name=Brand", "name"],
+        ["css=#Brand", "css:finder"],
+        ["xpath=//input[@id='Brand']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "Toyota"
+    }, {
+      "id": "35183947-addc-4057-8893-9fc489831977",
+      "comment": "",
+      "command": "click",
+      "target": "id=Model",
+      "targets": [
+        ["id=Model", "id"],
+        ["name=Model", "name"],
+        ["css=#Model", "css:finder"],
+        ["xpath=//input[@id='Model']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "af55eedc-9ce6-461f-9d09-f98ddeda7da1",
+      "comment": "",
+      "command": "type",
+      "target": "id=Model",
+      "targets": [
+        ["id=Model", "id"],
+        ["name=Model", "name"],
+        ["css=#Model", "css:finder"],
+        ["xpath=//input[@id='Model']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Camry"
+    }, {
+      "id": "24440e23-5d30-41bc-92f2-0acf0c992956",
+      "comment": "",
+      "command": "click",
+      "target": "id=CarClass",
+      "targets": [
+        ["id=CarClass", "id"],
+        ["name=CarClass", "name"],
+        ["css=#CarClass", "css:finder"],
+        ["xpath=//input[@id='CarClass']", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "64178f75-8f31-4e76-9978-f174c40c1a75",
+      "comment": "",
+      "command": "type",
+      "target": "id=CarClass",
+      "targets": [
+        ["id=CarClass", "id"],
+        ["name=CarClass", "name"],
+        ["css=#CarClass", "css:finder"],
+        ["xpath=//input[@id='CarClass']", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "C"
+    }, {
+      "id": "5e3c49d6-7d31-4775-879c-76121f905853",
+      "comment": "",
+      "command": "click",
+      "target": "id=Year",
+      "targets": [
+        ["id=Year", "id"],
+        ["name=Year", "name"],
+        ["css=#Year", "css:finder"],
+        ["xpath=//input[@id='Year']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2811322a-56d4-4b48-be9f-090edbe3c610",
+      "comment": "",
+      "command": "type",
+      "target": "id=Year",
+      "targets": [
+        ["id=Year", "id"],
+        ["name=Year", "name"],
+        ["css=#Year", "css:finder"],
+        ["xpath=//input[@id='Year']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "2017"
+    }, {
+      "id": "acca04a6-d203-4446-a052-ed0e226d0e4f",
+      "comment": "",
+      "command": "click",
+      "target": "id=LicensePlate",
+      "targets": [
+        ["id=LicensePlate", "id"],
+        ["name=LicensePlate", "name"],
+        ["css=#LicensePlate", "css:finder"],
+        ["xpath=//input[@id='LicensePlate']", "xpath:attributes"],
+        ["xpath=//div[6]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0045bac1-4ae0-4a27-b217-a166642c099c",
+      "comment": "",
+      "command": "type",
+      "target": "id=LicensePlate",
+      "targets": [
+        ["id=LicensePlate", "id"],
+        ["name=LicensePlate", "name"],
+        ["css=#LicensePlate", "css:finder"],
+        ["xpath=//input[@id='LicensePlate']", "xpath:attributes"],
+        ["xpath=//div[6]/input", "xpath:position"]
+      ],
+      "value": "К666ТР 77"
+    }, {
+      "id": "a3d48360-284d-47d7-9a46-43461f04dd2f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[9]/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "f0bcc1ec-6867-458c-9123-e41fece0c70b",
+    "name": "Подача заявки на участие",
+    "commands": [{
+      "id": "e9b00821-8f02-4b63-b7c7-ec2496ba8ae4",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6fc0d6b9-a984-457c-b9c3-ff7fc831cd8e",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1355x816",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f9197851-4ed0-4bcb-bb1b-2c2626777e63",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Мои заявки",
+      "targets": [
+        ["linkText=Мои заявки", "linkText"],
+        ["css=.nav-item:nth-child(6) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Мои заявки')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Applications')]", "xpath:href"],
+        ["xpath=//li[6]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Мои заявки')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5dd88f1f-b4e4-4846-bd67-b5e470b3baf1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'Подать новую заявку')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Applications/Create')]", "xpath:href"],
+        ["xpath=//p/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4a231b0a-2ff1-48ec-bc71-a2d7b7eabb80",
+      "comment": "",
+      "command": "select",
+      "target": "id=eventSelect",
+      "targets": [],
+      "value": "label=Ралли Кросс - 29.12.2025 15:00"
+    }, {
+      "id": "597c6d71-de41-423e-8bb4-2d0a24761357",
+      "comment": "",
+      "command": "click",
+      "target": "css=option:nth-child(3)",
+      "targets": [
+        ["css=option:nth-child(3)", "css:finder"],
+        ["xpath=//option[@value='3']", "xpath:attributes"],
+        ["xpath=//select[@id='eventSelect']/option[3]", "xpath:idRelative"],
+        ["xpath=//option[3]", "xpath:position"],
+        ["xpath=//option[contains(.,'\n                                Ралли Кросс - 29.12.2025 15:00\n                            ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ab4604c0-1e9c-40a7-a2f6-72d62a50d098",
+      "comment": "",
+      "command": "click",
+      "target": "id=carSelect",
+      "targets": [
+        ["id=carSelect", "id"],
+        ["name=CarId", "name"],
+        ["css=#carSelect", "css:finder"],
+        ["xpath=//select[@id='carSelect']", "xpath:attributes"],
+        ["xpath=//div[3]/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6b76848e-007f-46d7-8199-529a05b2d2f9",
+      "comment": "",
+      "command": "select",
+      "target": "id=carSelect",
+      "targets": [],
+      "value": "label=Subaru Impreza WRX STI (Б656УР 77) - WRC - 234 л.с."
+    }, {
+      "id": "8518c2af-6642-48a1-a975-1ab6003bd181",
+      "comment": "",
+      "command": "click",
+      "target": "css=#carSelect > option:nth-child(2)",
+      "targets": [
+        ["css=#carSelect > option:nth-child(2)", "css:finder"],
+        ["xpath=(//option[@value='4'])[2]", "xpath:attributes"],
+        ["xpath=//select[@id='carSelect']/option[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/select/option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'\n                                Subaru Impreza WRX STI (Б656УР 77) - WRC\n - 234 л.с.                            ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "775e1f52-7738-4a97-838d-a9e1207dad75",
+      "comment": "",
+      "command": "click",
+      "target": "id=HelmetType",
+      "targets": [
+        ["id=HelmetType", "id"],
+        ["name=HelmetType", "name"],
+        ["css=#HelmetType", "css:finder"],
+        ["xpath=//select[@id='HelmetType']", "xpath:attributes"],
+        ["xpath=//div[4]/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e0d72fb9-dd53-4059-bd36-0dcde6df3ff7",
+      "comment": "",
+      "command": "click",
+      "target": "css=#HelmetType > option:nth-child(1)",
+      "targets": [
+        ["css=#HelmetType > option:nth-child(1)", "css:finder"],
+        ["xpath=//option[@value='OWN']", "xpath:attributes"],
+        ["xpath=//select[@id='HelmetType']/option", "xpath:idRelative"],
+        ["xpath=//div[4]/select/option", "xpath:position"],
+        ["xpath=//option[contains(.,'Свой')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8af5d5a5-111e-4a76-9996-66297e040a00",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "f744e084-3d82-4bdb-8fd7-06fa067d814a",
+    "name": "Одобрение заявки администратором",
+    "commands": [{
+      "id": "25262096-5546-4893-9c53-7b48353a1273",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "edb5f6df-bc8a-419a-956d-57b9aa411956",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1355x816",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "50de90a0-7948-4ace-a1be-7e17ae641146",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Вход",
+      "targets": [
+        ["linkText=Вход", "linkText"],
+        ["css=.navbar-nav:nth-child(2) > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Вход')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Account/Login')]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Вход')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "73f9609d-95c9-49e1-b779-1cd1e5fed7e5",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8614d954-89a3-4c26-bbdc-41bc84a1f2fe",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin@example.com"
+    }, {
+      "id": "57a2134b-687f-45e5-919b-17be62145dc3",
+      "comment": "",
+      "command": "click",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "87a89951-9604-458d-b012-411611419da3",
+      "comment": "",
+      "command": "type",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "35576542-7702-4cfa-8c61-a4ccbb107a02",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[4]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b31dfc71-06cb-4a37-b81b-1d62cc7048a9",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Управление заявками",
+      "targets": [
+        ["linkText=Управление заявками", "linkText"],
+        ["css=.nav-item:nth-child(5) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Управление заявками')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/ApplicationsAdmin')]", "xpath:href"],
+        ["xpath=//li[5]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Управление заявками')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "391a929a-09e6-4181-a6fa-b1d70cd878f0",
+      "comment": "",
+      "command": "click",
+      "target": "css=td:nth-child(3)",
+      "targets": [
+        ["css=td:nth-child(3)", "css:finder"],
+        ["xpath=//td[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5e5979a4-49dc-4357-8429-5cd83d0088f2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-sm",
+      "targets": [
+        ["css=.btn-sm", "css:finder"],
+        ["xpath=//a[contains(text(),'Подробнее')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/ApplicationsAdmin/Details/8')]", "xpath:href"],
+        ["xpath=//td[6]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1379917c-80ab-4f0d-b596-0461ea7194b2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-success",
+      "targets": [
+        ["css=.btn-success", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[2]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "574d478c-ce48-4e8f-8174-fa68bcedab27",
+    "name": "Запись времени круга",
+    "commands": [{
+      "id": "0a70595f-7ef9-4b2e-90a7-580777bd8f52",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "86d409d6-0211-40b0-95fe-ef7c925a03b8",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1355x816",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6d003758-c7f2-4a43-8ee8-cad2b5ea0f52",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Запись времени",
+      "targets": [
+        ["linkText=Запись времени", "linkText"],
+        ["css=.nav-item:nth-child(6) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Запись времени')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/LapTimes')]", "xpath:href"],
+        ["xpath=//li[6]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Запись времени')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0a0231af-aebc-4ef3-ba81-78ad1f53991a",
+      "comment": "",
+      "command": "select",
+      "target": "id=eventId",
+      "targets": [],
+      "value": "label=Ралли Кросс"
+    }, {
+      "id": "96c4bcf5-4b88-4272-8235-65daf7c423c7",
+      "comment": "",
+      "command": "click",
+      "target": "css=option:nth-child(2)",
+      "targets": [
+        ["css=option:nth-child(2)", "css:finder"],
+        ["xpath=//option[@value='3']", "xpath:attributes"],
+        ["xpath=//select[@id='eventId']/option[2]", "xpath:idRelative"],
+        ["xpath=//option[2]", "xpath:position"],
+        ["xpath=//option[contains(.,'Ралли Кросс')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "190b40b5-0a7c-4eb1-a294-d1b7c3f5dc1b",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(2) .btn",
+      "targets": [
+        ["css=tr:nth-child(2) .btn", "css:finder"],
+        ["xpath=(//a[contains(text(),'Добавить круг')])[2]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/LapTimes/Create?eventId=3&applicationId=8')]", "xpath:href"],
+        ["xpath=//tr[2]/td[7]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a9f48673-783d-493b-bcc7-0819b1ef301b",
+      "comment": "",
+      "command": "click",
+      "target": "id=Time",
+      "targets": [
+        ["id=Time", "id"],
+        ["name=Time", "name"],
+        ["css=#Time", "css:finder"],
+        ["xpath=//input[@id='Time']", "xpath:attributes"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "26b0fcdc-4cc8-4ffd-b8f7-215d38aa41a7",
+      "comment": "",
+      "command": "type",
+      "target": "id=Time",
+      "targets": [
+        ["id=Time", "id"],
+        ["name=Time", "name"],
+        ["css=#Time", "css:finder"],
+        ["xpath=//input[@id='Time']", "xpath:attributes"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": "03:45.1"
+    }, {
+      "id": "80dda562-33a9-41b8-99ab-833101f108bf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "3aed1dd8-43f2-416d-9fe0-b864597f1e38",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["https://localhost:7030/"],
+  "plugins": []
+}
